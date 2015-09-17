@@ -1,0 +1,44 @@
+<section id="keys">
+    <section id="dojoxfunctional">
+        <h2>Object.prototype.keys()</h2>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require([
+    'dojox/lang/functional/object'
+], function(o) {
+    var obj = {
+        key: 'value1',
+        name: 'myName',
+        numeric: 1,
+        'hello': 'there'
+    };
+
+    console.log(o.keys(obj));
+    console.log(o.values(obj));
+});
+                </code>
+            </pre>
+            ...
+        </p>
+    </section>
+    <section id="objectkeys">
+        <h2>Object.prototype.keys()</h2>
+        <p>
+            becomes:
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var obj = {
+    key: 'value1',
+    name: 'myName',
+    numeric: 1,
+    'hello': 'there'
+};
+
+console.log(Object.keys(obj));
+//Object.keys(obj).forEach(/*...*/);
+                </code>
+            </pre>
+        </p>
+    </section>
+</section>

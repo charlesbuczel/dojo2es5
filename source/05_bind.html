@@ -1,0 +1,30 @@
+<section id="bind">
+    <h2>Function.prototype.bind()</h2>
+    <p>
+        <pre>
+            <code data-trim contenteditable class="javascript">
+require(["dojo/_base/lang"], function(lang){
+    var myObj = { foo: "bar" },
+        func = lang.hitch(myObj, function(){
+            console.log(this.foo);
+        });
+
+        func();
+});
+            </code>
+        </pre>
+        becomes:
+    </p>
+    <p>
+        <pre>
+            <code data-trim contenteditable class="javascript">
+var myObj = { foo: "bar" },
+    func = function(){
+        console.log(this.foo);
+    }.bind(myObj);
+
+func();
+            </code>
+        </pre>
+    </p>
+</section>

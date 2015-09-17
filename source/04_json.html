@@ -1,0 +1,32 @@
+<section id="json">
+    <section id="jsonparsestringify">
+        <h2>JSON</h2>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/json"], function(JSON){
+    var newJson = JSON.parse('{"hello":"world"}'),
+        jsonString = JSON.stringify(newJson);
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var newJson = JSON.parse('{"hello":"world"}'),
+    jsonString = JSON.stringify(newJson);
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="jsongotchas">
+        <h3>Gotchas</h3>
+        <ul>
+            <li>dojo's parse uses eval underneath. optional second param (boolean) to enable secure parsing</li>
+            <li>es5 parse - optional second param is a function allowing to transform the json</li>
+            <li>stringify works same for both</li>
+        </ul>
+    </section>
+</section>

@@ -1,0 +1,141 @@
+<section id="array">
+    <section id="arrayintro">
+        <h2>Array</h2>
+        <ul>
+            <li>Array.prototype.isArray()</li>
+            <li>Array.prototype.indexOf() and .lastIndexOf()</li>
+            <li>Array.prototype.forEach()</li>
+            <li>Array.prototype.every()</li>
+            <li>Array.prototype.some()</li>
+            <li>Array.prototype.filter()</li>
+            <li>Array.prototype.map()</li>
+            <li>Array.reduce() and .reduceRight()</li>
+        </ul>
+    </section>
+    <section id="arrayisarray">
+        <h2>Array.isArray([])</h2>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/_base/lang"], function(lang){
+  lang.isArray([1,2]);
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+Array.isArray("this will be false");
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="arrayindexof">
+        <h2>[].indexOf and [].lastIndexOf</h2>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/_base/array"], function(array){
+    var arr = [ 1, 2, 3, 4, 5 ];
+    array.indexOf(arr, 1);
+    array.lastIndexOf(arr,1);
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var arr = [ 1, 2, 3, 4, 5 ];
+arr.indexOf(1);
+arr.lastIndexOf(1);
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="arrayforeach">
+        <h2>[].forEach/every/some/filter</h2>
+        <ul>
+            <li>first argument a callback function(currentElement, index, array), second context</li>
+        </ul>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/_base/array"], function(array){
+    var arr = [ 1, 2, 3, 4, 5 ];
+    array.forEach(arr, function (element) { console.log(element); });
+    array.filter(arr, function (element) { return element > 2; }, this)
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var arr = [ 1, 2, 3, 4, 5 ];
+arr.some(function (element, index) { return index > 2 &amp;&amp; element > 2; }, this);
+arr.every(e => e > 3);
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="arraymap">
+        <h2>[].map</h2>
+        <ul>
+            <li>loop through array and transform each element</li>
+            <li>first argument a callback function(currentValue, index, array), second context</li>
+        </ul>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/_base/array"], function(array){
+    var arr = [ 1, 2, 3, 4, 5 ];
+    array.map(arr, function (element) { return element * element; });
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var arr = [ 1, 2, 3, 4, 5 ];
+arr.map(Math.sqrt)
+arr.map(parseInt);
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="arrayreduce">
+        <h2>[].reduce/reduceRight</h2>
+        <ul>
+        <ul>
+            <li>REDUCE array to single value, iterating from left or right</li>
+            <li>only in dojox...</li>
+            <li>callback: previousValue, currentValue, index, array</li>
+        </ul>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojox/lang/functional/array"], function(array){
+    var arr = [ [1, 2], [3, 4, 5] ];
+    array.reduce(arr, function(prev, curr) { return prev + curr; });
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var arr = [ 1, 2, 3, 4, 5 ];
+arr.reduceRight(function(a, b) { a.concat(b); });
+                </code>
+            </pre>
+        </p>
+    </section>
+</section>
