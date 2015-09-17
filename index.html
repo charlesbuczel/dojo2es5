@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Your Title</title>
+		<title>dojo2es5</title>
 
-		<meta name="description" content="Your Description">
-		<meta name="author" content="Your Name">
+		<meta name="description" content="Overview of ES5 for dojo devs">
+		<meta name="author" content="Charles Buczel">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -41,62 +41,327 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
                 
-<section>
+    <section id="title">
     <h1>Dojo 2 ES5</h1>
-    <h3>A quick overview of ES5 functionality</h3>
+    <h3>An overview of selected ES5 functionality</h3>
 </section>
-<section id="fragments">
+    <section id="intro">
     <h2>ECMAScript</h2>
-    <p class="fragment">ES3 - 1999</p>
-    <p class="fragment">ES5 - 2009 (ES5.1 - 2011)</p>
-    <p class="fragment">ES5 - everythint ie9+</p>
+    <ul>
+        <li class="fragment">ES3 - 1999</li>
+        <li class="fragment">ES5 - 2009 (ES5.1 - 2011)</li>
+        <li class="fragment">ES5 - IE9+ compatible</li>
+        <li class="fragment">below IE9? use shims:
+            <br />
+            <a href="https://github.com/es-shims/es5-shim">github.com/es-shims/es5-shim</a>
+        </li>
+        <li class="fragment">in doubt? check compability tables:
+            <br />
+            <a href="http://kangax.github.io/compat-table/es5/">kangax.gihub.io/compat-table/es5</a>
+        </li>
+    </ul>
 </section>
-<section data-markdown>
-    <script type="text/template">
-        ## Testing Markdown
-
-        This _should_ be __bold__ and this should be a [link](https://github.com/mbrochh/reveal-template).
-
-        ### Heading 3
-
-        * A list
-        * With three
-        * items
-    </script>
+    <section id="motivation">
+    <h2>Why native ES over dojo?</h2>
+    <ul>
+        <li>less dependence on the framework - more reusability across projects</li>
+        <li>less abstraction</li>
+        <li>potential migration to different stack easier</li>
+        <li>easier for new hires to join the project (easier for js developer than a dojo dev)</li>
+        <li>...</li>
+    </ul>
 </section>
-<section>
-    <h2>Testing code snippets</h2>
-    <pre><code>
-    import os
-    path = os.path.join('foo', 'bar')
-    def do_something(path):
-        return path
-    </code></pre>
+    <section id="json">
+    <section id="jsonparsestringify">
+        <h2>JSON</h2>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/json"], function(JSON){
+    var newJson = JSON.parse('{"hello":"world"}'),
+        jsonString = JSON.stringify(newJson);
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var newJson = JSON.parse('{"hello":"world"}'),
+    jsonString = JSON.stringify(newJson);
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="jsongotchas">
+        <h3>Gotchas</h3>
+        <ul>
+            <li>dojo's parse uses eval underneath. optional second param (boolean) to enable secure parsing</li>
+            <li>es5 parse - optional second param is a function allowing to transform the json</li>
+            <li>stringify works same for both</li>
+        </ul>
+    </section>
 </section>
-<section>
-    <section data-background="#ff0000" data-markdown>
-        <script type="text/template">
-            ## Testing backgrounds
+    <section id="bind">
+    <h2>Function.prototype.bind()</h2>
+    <p>
+        <pre>
+            <code data-trim contenteditable class="javascript">
+require(["dojo/_base/lang"], function(lang){
+    var myObj = { foo: "bar" },
+        func = lang.hitch(myObj, function(){
+            console.log(this.foo);
+        });
 
-            Now we are red
-        </script>
+        func();
+});
+            </code>
+        </pre>
+        becomes:
+    </p>
+    <p>
+        <pre>
+            <code data-trim contenteditable class="javascript">
+var myObj = { foo: "bar" },
+    func = function(){
+        console.log(this.foo);
+    }.bind(myObj);
+
+func();
+            </code>
+        </pre>
+    </p>
+</section>
+    <section id="keys">
+    <section id="dojoxfunctional">
+        <h2>Object.prototype.keys()</h2>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require([
+    'dojox/lang/functional/object'
+], function(o) {
+    var obj = {
+        key: 'value1',
+        name: 'myName',
+        numeric: 1,
+        'hello': 'there'
+    };
+
+    console.log(o.keys(obj));
+    console.log(o.values(obj));
+});
+                </code>
+            </pre>
+            ...
+        </p>
     </section>
-    <section data-background="#00ff00" data-markdown>
-        <script type="text/template">
-            ## Testing backgrounds
+    <section id="objectkeys">
+        <h2>Object.prototype.keys()</h2>
+        <p>
+            becomes:
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var obj = {
+    key: 'value1',
+    name: 'myName',
+    numeric: 1,
+    'hello': 'there'
+};
 
-            Now we are green
-        </script>
+console.log(Object.keys(obj));
+//Object.keys(obj).forEach(/*...*/);
+                </code>
+            </pre>
+        </p>
     </section>
-    <section data-background="#0000ff" data-markdown>
-        <script type="text/template">
-            ## Testing backgrounds
-
-            Now we are blue
-
-            <small>dabadi dabadai...</small>
-        </script>
+</section>
+    <section id="array">
+    <section id="arrayintro">
+        <h2>Array</h2>
+        <ul>
+            <li>Array.prototype.isArray()</li>
+            <li>Array.prototype.indexOf() and .lastIndexOf()</li>
+            <li>Array.prototype.forEach()</li>
+            <li>Array.prototype.every()</li>
+            <li>Array.prototype.some()</li>
+            <li>Array.prototype.filter()</li>
+            <li>Array.prototype.map()</li>
+            <li>Array.reduce() and .reduceRight()</li>
+        </ul>
     </section>
+    <section id="arrayisarray">
+        <h2>Array.isArray([])</h2>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/_base/lang"], function(lang){
+  lang.isArray([1,2]);
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+Array.isArray("this will be false");
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="arrayindexof">
+        <h2>[].indexOf and [].lastIndexOf</h2>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/_base/array"], function(array){
+    var arr = [ 1, 2, 3, 4, 5 ];
+    array.indexOf(arr, 1);
+    array.lastIndexOf(arr,1);
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var arr = [ 1, 2, 3, 4, 5 ];
+arr.indexOf(1);
+arr.lastIndexOf(1);
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="arrayforeach">
+        <h2>[].forEach/every/some/filter</h2>
+        <ul>
+            <li>first argument a callback function(currentElement, index, array), second context</li>
+        </ul>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/_base/array"], function(array){
+    var arr = [ 1, 2, 3, 4, 5 ];
+    array.forEach(arr, function (element) { console.log(element); });
+    array.filter(arr, function (element) { return element > 2; }, this)
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var arr = [ 1, 2, 3, 4, 5 ];
+arr.some(function (element, index) { return index > 2 &amp;&amp; element > 2; }, this);
+arr.every(e => e > 3);
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="arraymap">
+        <h2>[].map</h2>
+        <ul>
+            <li>loop through array and transform each element</li>
+            <li>first argument a callback function(currentValue, index, array), second context</li>
+        </ul>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojo/_base/array"], function(array){
+    var arr = [ 1, 2, 3, 4, 5 ];
+    array.map(arr, function (element) { return element * element; });
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var arr = [ 1, 2, 3, 4, 5 ];
+arr.map(Math.sqrt)
+arr.map(parseInt);
+                </code>
+            </pre>
+        </p>
+    </section>
+    <section id="arrayreduce">
+        <h2>[].reduce/reduceRight</h2>
+        <ul>
+        <ul>
+            <li>REDUCE array to single value, iterating from left or right</li>
+            <li>only in dojox...</li>
+            <li>callback: previousValue, currentValue, index, array</li>
+        </ul>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+require(["dojox/lang/functional/array"], function(array){
+    var arr = [ [1, 2], [3, 4, 5] ];
+    array.reduce(arr, function(prev, curr) { return prev + curr; });
+});
+                </code>
+            </pre>
+            becomes:
+        </p>
+        <p>
+            <pre>
+                <code data-trim contenteditable class="javascript">
+var arr = [ 1, 2, 3, 4, 5 ];
+arr.reduceRight(function(a, b) { a.concat(b); });
+                </code>
+            </pre>
+        </p>
+    </section>
+</section>
+    <section id="trim">
+    <h2>String.prototype.trim()</h2>
+    <p>
+        <pre>
+            <code data-trim contenteditable class="javascript">
+require(["dojo/_base/lang"], function(lang){
+  lang.trim("   one\f\n\t");
+});
+            </code>
+        </pre>
+        becomes:
+    </p>
+    <p>
+        <pre>
+            <code data-trim contenteditable class="javascript">
+"  test  \n".trim();
+            </code>
+        </pre>
+    </p>
+</section>
+    <section id="other">
+    <h2>And so on...</h2>
+    <ul>
+        <li>Date.now()</li>
+        <li>parseInt radix defaults to 10</li>
+        <li>trailing commas ok</li>
+        <li>'strict mode' (no support from IE9)</li>
+        <li>no reserved words for property names</li>
+        <li>NaN, Infinity, undefined are now constants</li>
+        <li>summary of es5 features:
+            <br />
+            <a href="https://gist.github.com/sym3tri/2425983">gist.github.com/sym3tri/2425983</a>
+        </li>
+    </ul>
+</section>
+    <section id="summary">
+    <h2>Summary</h2>
+    <ul>
+        <li>dojo/json --> JSON</li>
+        <li>lang.hitch() --> fn.bind()</li>
+        <li>lang.trim() --> str.trim()</li>
+        <li>Object.keys(obj)</li>
+        <li>no need for dojo/_base/array</li>
+    </ul>
 </section>
 
             </div>
