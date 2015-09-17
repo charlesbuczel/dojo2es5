@@ -256,8 +256,8 @@ require(["dojo/_base/array"], function(array){
             <pre>
                 <code data-trim contenteditable class="javascript">
 var arr = [ 1, 2, 3, 4, 5 ];
-arr.some(function (element, index) { return index > 2 &amp;&amp; element > 2; }, this);
-arr.every(e => e > 3);
+arr.some(function (e, index) { return index > 2 &amp;&amp; e > 2; }, this);
+arr.every(Array.isArray);
                 </code>
             </pre>
         </p>
